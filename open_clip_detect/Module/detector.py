@@ -4,6 +4,11 @@ import open_clip
 import numpy as np
 from PIL import Image
 from typing import Union
+from open_clip.factory import PreprocessCfg, image_transform_v2
+
+from open_clip_detect.Config.clip_vision_cfg import CLIPVisionCfg
+from open_clip_detect.Config.clip_text_cfg import CLIPTextCfg
+from open_clip_detect.Model.clip import CLIP
 
 
 class Detector(object):
@@ -20,7 +25,25 @@ class Detector(object):
 
             self.model, _, self.preprocess = open_clip.create_model_and_transforms('ViT-H-14-378-quickgelu', pretrained=pretrained)
         else:
-            self.model, _, self.preprocess = open_clip.create_model_and_transforms('ViT-H-14-378-quickgelu')
+            self.model = CLIP(
+                embed_dim=1024,
+                vision_cfg=CLIPVisionCfg(
+                    image_size=378,
+                    layers=32,
+                    width=1280,
+                    head_width=80,
+                    patch_size=14,
+                ),
+                text_cfg=CLIPTextCfg(
+                    context_length=77,
+                    vocab_size=49408,
+                    width=1024,
+                    heads=16,
+                    layers=24,
+                ),
+                quick_gelu=True,
+            )
+            _, _, self.preprocess = open_clip.create_model_and_transforms('ViT-H-14-378-quickgelu')
 
         self.model = self.model.to(self.device, dtype=self.dtype)
         self.model.eval()
