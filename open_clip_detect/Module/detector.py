@@ -4,7 +4,6 @@ import open_clip
 import numpy as np
 from PIL import Image
 from typing import Union
-from open_clip.factory import PreprocessCfg, image_transform_v2
 
 from open_clip_detect.Config.clip_vision_cfg import CLIPVisionCfg
 from open_clip_detect.Config.clip_text_cfg import CLIPTextCfg
