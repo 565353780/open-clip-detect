@@ -9,8 +9,7 @@ from typing import Union
 class Detector(object):
     def __init__(self, model_file_path: Union[str, None]=None, device: str = 'cpu', auto_download_model: bool = False) -> None:
         self.device = device
-        # self.dtype = torch.bfloat16 if torch.cuda.is_bf16_supported() else torch.float16
-        self.dtype = torch.float16
+        self.dtype = torch.float32
 
         if auto_download_model:
             if model_file_path is not None:
